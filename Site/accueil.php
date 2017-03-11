@@ -302,7 +302,7 @@
                         $i = 1;
     
                         while($row = $result->fetch_assoc()) {
-                            $timestamp = strtotime($row['heure_Debut']) + $row['Duree']*60;
+                            $timestamp = strtotime($row['heure_debut']) + $row['duree']*60;
                             $time = date('H:i:i', $timestamp);
                             
                             echo "{ title:'".$row['Nom_Activite']."', start:'".$row['Date_Activite']."T".$row['Heure_Debut']."', end:'".$row['Date_Activite']."T".$time."', allday: false,  id:".$row['ID_Activite_prevue'].", backgroundColor:'#".$row['Couleur']."', borderColor:'black', participant:".$row['participant'].", participant_max:".$row['Participants_Max'].", Endroit:'".$row['Endroit']."' }";
