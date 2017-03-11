@@ -22,7 +22,7 @@
 		$mysqli->query($query);
 
 
-		$query = "update activites_prevues  set presences_prises=1 where ID_Activite_Prevue = ".$activite_prevue;
+		$query = "update activites_prevues set presences_prises=1 where ID_Activite_Prevue = ".$activite_prevue;
 
 		echo $query;
 
@@ -38,7 +38,7 @@
 
 		
 		foreach ((array)$eleves_presents as $value) {
-    	$query = "update utilisateur_activites set present=1 where ID_utilisateur = ".$value;
+    	$query = "update utilisateur_activites set present=1 where ID_utilisateur = ".$value."and ID_Activite_Prevue = $_POST['ACTIVITE']";
     	echo $query;
 		
 		$mysqli->query($query);
