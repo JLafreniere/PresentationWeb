@@ -40,10 +40,10 @@
                           die("Connection failed: " . $conn->connect_error);
                       } 
                       $insert = true;
-                      $query = "SELECT ap.ID_Activite_prevue
+                      $query = "SELECT ap.id_Activite_prevue
                               FROM  activites_prevues ap, utilisateur_activites ua 
-                              where ap.ID_activite_prevue = ua.ID_activite_prevue
-                              and ap.ID_Activite_prevue = ".$_POST['id_activite']." 
+                              where ap.id_activite_prevue = ua.id_activite_prevue
+                              and ap.id_activite_prevue = ".$_POST['id_activite']." 
                               and ua.id_utilisateur = ".$_SESSION['uid'];
                     $result = $mysqli->query($query);
                     if ($result->num_rows > 0) {
@@ -52,18 +52,18 @@
                             }
                             
                         
-                      $query = "SELECT ap.ID_Activite_prevue, count(ua.ID_Eleve_Activite) as participant, ap.Participants_Max
+                      $query = "SELECT ap.id_activite_prevue, count(ua.id_eleve_activite) as participant, ap.participants_max
                               FROM activites a, activites_prevues ap 
-                              left join utilisateur_activites ua on ua.ID_activite_prevue = ap.ID_activite_prevue
-                              where a.ID_Activite = ap.ID_Activite
-                              and ap.ID_Activite_prevue = ".$_POST['id_activite']."
-                              group by ap.ID_activite_prevue";
+                              left join utilisateur_activites ua on ua.id_activite_prevue = ap.id_activite_prevue
+                              where a.id_activite = ap.id_activite
+                              and ap.id_activite_prevue = ".$_POST['id_activite']."
+                              group by ap.id_activite_prevue";
                     $result = $mysqli->query($query);
                     if ($result->num_rows > 0) {
                         $i = 1;
                         
                         while($row = $result->fetch_assoc()) {
-                            if($row['Participants_Max'] != 0 and $row['participant']>=$row['Participants_Max']){
+                            if($row['participants_max'] != 0 and $row['participant']>=$row['participants_max']){
                                 $insert = false;
                                 break;
                             }
@@ -71,7 +71,7 @@
                         }
                     
                   if($insert){
-                      $sql = "INSERT INTO utilisateur_activites (ID_Utilisateur,ID_Activite_Prevue,Present)
+                      $sql = "INSERT INTO utilisateur_activites (id_utilisateur,id_activite_prevue,present)
                       VALUES (".$_SESSION['uid'].",".$_POST['id_activite'].",1)";
                   
                       if ($conn->query($sql) === TRUE) {
@@ -85,7 +85,7 @@
                       $conn->close();
                 }
           }else if(isset($_POST['Sub_liste_attente'])){
-              $sql = "INSERT INTO utilisateur_activites (ID_Utilisateur,ID_Activite_Prevue,Present)
+              $sql = "INSERT INTO utilisateur_activites (id_utilisateur,id_activite_prevue,present)
                       VALUES (".$_SESSION['uid'].",".$_POST['id_activite'].",2)";
                   
                       if ($conn->query($sql) === TRUE) {
@@ -114,13 +114,13 @@
       <?php
             
                     if ($mysqli->connect_errno) {
-                        echo "Erreur de connection vers MYSQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+                        echo "Erreur de connexion vers MYSQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
                     }
-                    $query = "SELECT distinct Nom_Activite FROM activites";
+                    $query = "SELECT distinct nom_activite FROM activites";
                     $result = $mysqli->query($query);
                     if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()) {
-                            echo "<option value='".$row['Nom_Activite']."'>".$row['Nom_Activite']."</option>";
+                            echo "<option value='".$row['nom_activite']."'>".$row['nom_activite']."</option>";
                         }
                     }
       ?>
@@ -181,11 +181,11 @@
                     if ($mysqli->connect_errno) {
                         echo "Erreur de connection vers MYSQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
                     }
-                    $query = "SELECT ap.ID_Activite_Prevue, ap.Date_Activite, ap.Heure_Debut, a.Duree 
+                    $query = "SELECT ap.id_activite_prevue, ap.date_activite, ap.heure_debut, a.duree 
                               FROM activites_prevues ap, activites a, utilisateur_activites ua
-                              where ua.ID_Utilisateur = ".$_SESSION['uid']." 
-                               and ap.ID_Activite = a.ID_Activite
-                               and ua.ID_Activite_prevue = ap.ID_Activite_Prevue";
+                              where ua.id_utilisateur = ".$_SESSION['uid']." 
+                               and ap.id_activite = a.id_activite
+                               and ua.id_activite_prevue = ap.id_activite_prevue";
                     $result = $mysqli->query($query);
                     echo "<script>activite_inscrit = [";
                     if ($result->num_rows > 0) {
@@ -193,7 +193,7 @@
                         
                         while($row = $result->fetch_assoc()) {
                             
-                            echo "[".$row['ID_Activite_Prevue'].",'".$row['Date_Activite']."','".$row['Heure_Debut']."',".$row['Duree']."]";
+                            echo "[".$row['id_activite_prevue'].",'".$row['date_activite']."','".$row['heure_debut']."',".$row['duree']."]";
                             if ($result->num_rows > $i) {
                                 echo ",";
                             }
@@ -221,15 +221,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 
       <script src="js/moment.js">moment.locale="fr"</script>
-    
 
-
-
-
-
-     
-      
-    
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js"></script>
          <script type="text/javascript" src="js/fullcalendar-fr.js"></script>
     <script type="text/javascript" src="js/gcal.js"></script>
@@ -298,19 +290,19 @@
                     <?php
                    
                     if ($mysqli->connect_errno) {
-                        echo "Erreur de connection vers MYSQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+                        echo "Erreur de connexion vers MYSQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
                     }
-                    $query = "SELECT ap.ID_Activite_prevue, a.Couleur, a.Nom_Activite, ap.Date_Activite, ap.Heure_Debut, a.Duree, count(ua.ID_Eleve_Activite) as participant, ap.Participants_Max, ap.Endroit
+                    $query = "SELECT ap.id_activite_prevue, a.couleur, a.nom_activite, ap.date_activite, ap.heure_debut, a.duree, count(ua.id_eleve_activite) as participant, ap.participants_max, ap.endroit
                               FROM activites a, activites_prevues ap 
-                              left join utilisateur_activites ua on ua.ID_activite_prevue = ap.ID_activite_prevue
-                              where a.ID_Activite = ap.ID_Activite
-                              group by ap.ID_activite_prevue";
+                              left join utilisateur_activites ua on ua.id_activite_prevue = ap.id_activite_prevue
+                              where a.id_activite = ap.id_activite
+                              group by ap.id_activite_prevue";
                     $result = $mysqli->query($query);
                     if ($result->num_rows > 0) {
                         $i = 1;
     
                         while($row = $result->fetch_assoc()) {
-                            $timestamp = strtotime($row['Heure_Debut']) + $row['Duree']*60;
+                            $timestamp = strtotime($row['heure_Debut']) + $row['Duree']*60;
                             $time = date('H:i:i', $timestamp);
                             
                             echo "{ title:'".$row['Nom_Activite']."', start:'".$row['Date_Activite']."T".$row['Heure_Debut']."', end:'".$row['Date_Activite']."T".$time."', allday: false,  id:".$row['ID_Activite_prevue'].", backgroundColor:'#".$row['Couleur']."', borderColor:'black', participant:".$row['participant'].", participant_max:".$row['Participants_Max'].", Endroit:'".$row['Endroit']."' }";
