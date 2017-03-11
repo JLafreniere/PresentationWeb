@@ -90,8 +90,8 @@
                   
                       if ($conn->query($sql) === TRUE) {
                           echo "<script>
-                              alert('Vous êtes inscrit sur la liste d'attente);
-                          </script>";
+								alert('Vous êtes inscrit sur la liste d'attente);
+								</script>";
                       } else {
                           echo "Error: " . $sql . "<br>" . $conn->error;
                       }

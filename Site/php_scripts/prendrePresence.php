@@ -27,18 +27,11 @@
 		echo $query;
 
 		$mysqli = connexion();
-		$mysqli->query($query);
-
-
-
-
-		//$query = "delete from utilisateur_activites where ID_Activite_Prevue = ".$act;
-
-		
+		$mysqli->query($query);		
 
 		
 		foreach ((array)$eleves_presents as $value) {
-    	$query = "update utilisateur_activites set present=1 where ID_utilisateur = ".$value."and ID_Activite_Prevue = $_POST['ACTIVITE']";
+    	$query = "update utilisateur_activites set present=1 where ID_utilisateur = ".$value." and ID_Activite_Prevue = ".$activite_prevue;
     	echo $query;
 		
 		$mysqli->query($query);

@@ -3,104 +3,104 @@
     app.controller("ctrl", function($scope) {
 
 
-        $scope.eleves = <?php echo phpSelectQuery('select id_utilisateur, nom, prenom, id_groupe,code_acces, actif, courriel, telephone, sexe, username, password, administrateur from utilisateurs order by nom ASC')?>;
+        $scope.eleves = <?php echo phpselectquery('select id_utilisateur, nom, prenom, id_groupe,code_acces, actif, courriel, telephone, sexe, username, password, administrateur from utilisateurs order by nom asc')?>;
 
-        $scope.groupes = <?php echo phpSelectQuery('select id_groupe, nom_groupe, id_prof, ensemble, nom_session, groupes.id_session, sessions.nom_session from groupes, sessions where groupes.id_session = sessions.id_session order by sessions.debut_session,  groupes.nom_groupe ASC')?>;
+        $scope.groupes = <?php echo phpselectquery('select id_groupe, nom_groupe, id_prof, ensemble, nom_session, groupes.id_session, sessions.nom_session from groupes, sessions where groupes.id_session = sessions.id_session order by sessions.debut_session,  groupes.nom_groupe asc')?>;
 
-        $scope.activites = <?php echo phpSelectQuery('select * from activites where hidden=false or hidden is null')?>;
+        $scope.activites = <?php echo phpselectquery('select * from activites where hidden=false or hidden is null')?>;
 
-        $scope.activites_prevues = <?php echo phpSelectQuery('select * from activites_prevues where hidden=false or hidden is null order by presences_prises, date_activite ')?>;
+        $scope.activites_prevues = <?php echo phpselectquery('select * from activites_prevues where hidden=false or hidden is null order by presences_prises, date_activite ')?>;
 
-        $scope.eleves_activites = <?php echo phpSelectQuery('select * from utilisateur_activites')?>;
+        $scope.eleves_activites = <?php echo phpselectquery('select * from utilisateur_activites')?>;
 
-        $scope.sessions = <?php echo phpSelectQuery('select * from sessions order by debut_session ASC')?>;
+        $scope.sessions = <?php echo phpselectquery('select * from sessions order by debut_session asc')?>;
 
-        $scope.codesAdmin = <?php echo phpSelectQuery('select * from utilisateurs where administrateur >= 1 and not CODE_ACCES="" order by administrateur')?>;
+        $scope.codesadmin = <?php echo phpselectquery('select * from utilisateurs where administrateur >= 1 and not code_acces="" order by administrateur')?>;
 
         $scope.ensembles = [1, 2, 3];
 
-        $scope.utilisateursSansGroupes = <?php echo phpSelectQuery('select * from utilisateurs where (id_groupe is null or id_groupe = 0) and  CODE_ACCES="" order by nom ASC')?>;
+        $scope.utilisateurssansgroupes = <?php echo phpselectquery('select * from utilisateurs where (id_groupe is null or id_groupe = 0) and  code_acces="" order by nom asc')?>;
 
-        $scope.comptesAdministrateur = <?php echo phpSelectQuery('select * from utilisateurs where administrateur >= 1 and CODE_ACCES="" order by nom ASC')?>;
+        $scope.comptesadministrateur = <?php echo phpselectquery('select * from utilisateurs where administrateur >= 1 and code_acces="" order by nom asc')?>;
 
-        $scope.points_debut = <?php echo phpSelectQuery('select sum(ponderation) as points_debut, utilisateurs.id_utilisateur
+        $scope.points_debut = <?php echo phpselectquery('select sum(ponderation) as points_debut, utilisateurs.id_utilisateur
             from utilisateurs, activites, activites_prevues, utilisateur_activites, sessions, groupes 
             where activites_prevues.id_activite = activites.id_activite 
             and activites_prevues.presences_prises = 1
-            and utilisateur_activites.id_activite_prevue = activites_prevues.ID_activite_prevue 
+            and utilisateur_activites.id_activite_prevue = activites_prevues.id_activite_prevue 
             and utilisateur_activites.id_utilisateur = utilisateurs.id_utilisateur
-            and utilisateurs.ID_Groupe = groupes.ID_Groupe
-            and groupes.ID_Session = sessions.ID_Session
-            and activites_prevues.date_activite > sessions.Debut_Session
+            and utilisateurs.id_groupe = groupes.id_groupe
+            and groupes.id_session = sessions.id_session
+            and activites_prevues.date_activite > sessions.debut_session
             and activites_prevues.date_activite < sessions.mi_session
             and utilisateur_activites.present = 1
             group by utilisateurs.id_utilisateur')?>;
 
-        $scope.points_fin = <?php echo phpSelectQuery('select sum(ponderation) as points_fin, utilisateurs.id_utilisateur
+        $scope.points_fin = <?php echo phpselectquery('select sum(ponderation) as points_fin, utilisateurs.id_utilisateur
          from utilisateurs, activites, activites_prevues, utilisateur_activites, sessions, groupes 
             where activites_prevues.id_activite = activites.id_activite 
             and activites_prevues.presences_prises = 1
-            and utilisateur_activites.id_activite_prevue = activites_prevues.ID_activite_prevue 
+            and utilisateur_activites.id_activite_prevue = activites_prevues.id_activite_prevue 
             and utilisateur_activites.id_utilisateur = utilisateurs.id_utilisateur
-            and utilisateurs.ID_Groupe = groupes.ID_Groupe
-            and groupes.ID_Session = sessions.ID_Session
-            and activites_prevues.date_activite > sessions.mi_Session
+            and utilisateurs.id_groupe = groupes.id_groupe
+            and groupes.id_session = sessions.id_session
+            and activites_prevues.date_activite > sessions.mi_session
             and activites_prevues.date_activite < sessions.fin_session
             and utilisateur_activites.present = 1
             group by utilisateurs.id_utilisateur')?>
 
-        $scope.penalites = <?php echo phpSelectQuery('select sum(ponderation) as penalite, utilisateurs.id_utilisateur from utilisateurs, activites, activites_prevues, utilisateur_activites, sessions, groupes where activites_prevues.id_activite = activites.id_activite and utilisateur_activites.id_activite_prevue = activites_prevues.ID_activite_prevue and utilisateur_activites.id_utilisateur = utilisateurs.id_utilisateur and utilisateurs.ID_Groupe = groupes.ID_Groupe and groupes.ID_Session = sessions.ID_Session and activites_prevues.date_activite > sessions.Debut_Session and activites_prevues.date_activite < sessions.fin_session and utilisateur_activites.present = 0 and activites_prevues.presences_prises = 1 group by utilisateurs.id_utilisateur')?>;
+        $scope.penalites = <?php echo phpselectquery('select sum(ponderation) as penalite, utilisateurs.id_utilisateur from utilisateurs, activites, activites_prevues, utilisateur_activites, sessions, groupes where activites_prevues.id_activite = activites.id_activite and utilisateur_activites.id_activite_prevue = activites_prevues.id_activite_prevue and utilisateur_activites.id_utilisateur = utilisateurs.id_utilisateur and utilisateurs.id_groupe = groupes.id_groupe and groupes.id_session = sessions.id_session and activites_prevues.date_activite > sessions.debut_session and activites_prevues.date_activite < sessions.fin_session and utilisateur_activites.present = 0 and activites_prevues.presences_prises = 1 group by utilisateurs.id_utilisateur')?>;
 
-        $scope.responsableSelectionne;
+        $scope.responsableselectionne;
 
-        $scope.SESSION = 0;
+        $scope.session = 0;
     
-        $scope.masquerPresence = true;
+        $scope.masquerpresence = true;
 
-        $scope.masquerPasse = true;
+        $scope.masquerpasse = true;
 
-        $scope.masquerGroupes = true;
+        $scope.masquergroupes = true;
 
-        $scope.groupePromotion;
+        $scope.groupepromotion;
 
-        $scope.codeGroupe = -1;
+        $scope.codegroupe = -1;
 
-        $scope.activiteSelectionne = -1;
+        $scope.activiteselectionne = -1;
 
-        $scope.afficherAdmins = true;
-        $scope.afficherResponsables = true;
+        $scope.afficheradmins = true;
+        $scope.afficherresponsables = true;
 
-        $scope.formatHeure = function(heure){
+        $scope.formatheure = function(heure){
             return heure.slice(0, -3);
         }
 
-        $scope.setActSelectionne = function(id){
-            $scope.activiteSelectionne = id;
+        $scope.setactselectionne = function(id){
+            $scope.activiteselectionne = id;
         }
 
-        $scope.setGroupe = function(id){
-                $scope.codeGroupe = id;            
+        $scope.setgroupe = function(id){
+                $scope.codegroupe = id;            
         }
 
         $scope.show_params = function(activite) {
             $('#modal_mod_planif').modal('open');
-            $('#ID_ACT_PLAN').val(activite.ID_activite_prevue);
-            $('#mod_nom_act').val(activite.ID_Activite);
+            $('#id_act_plan').val(activite.id_activite_prevue);
+            $('#mod_nom_act').val(activite.id_activite);
             $('#mod_nom_act').material_select();
-            $('#mod_date_act').val(activite.Date_Activite);
-            $('#mod_heure_deb').val(activite.Heure_debut);
-            $('#mod_participants_max').val(activite.Participants_Max);
-            $('#mod_frais').val(activite.Frais);
-            $('#mod_endroit').val(activite.Endroit);
+            $('#mod_date_act').val(activite.date_activite);
+            $('#mod_heure_deb').val(activite.heure_debut);
+            $('#mod_participants_max').val(activite.participants_max);
+            $('#mod_frais').val(activite.frais);
+            $('#mod_endroit').val(activite.endroit);
             $('#mod_responsable').val(activite.responsable);
             $('#mod_responsable').material_select();
-            $('.ACTIVER').addClass("active");
+            $('.activer').addclass("active");
         }
 
         $('#select_session').on('change', function() {
             let x = $('#select_session').val();
             $('#select_session').val(x);
-            $scope.SESSION = x;
+            $scope.session = x;
             $scope.$apply();
             $('#select_session').material_select();
         });
@@ -108,7 +108,7 @@
 
 
 
-        $scope.pointsDebutForEleve = function(id) {
+        $scope.pointsdebutforeleve = function(id) {
 
             let pts = 0;
             try {
@@ -121,16 +121,16 @@
                     return 5;
                 }
             } catch (err) {}
-            return parseInt(pts);
+            return parseint(pts);
 
 
 
         }
 
-        $scope.penaliteForEleve = function(id){
+        $scope.penaliteforeleve = function(id){
             try{
 
-            let pts = parseInt($scope.penalites.filter(function(el) {
+            let pts = parseint($scope.penalites.filter(function(el) {
                     return el.id_utilisateur == id;
                 })[0].penalite);
             return pts;
@@ -143,7 +143,7 @@
         }
 
 
-        $scope.pointsFinForEleve = function(id) {
+        $scope.pointsfinforeleve = function(id) {
 
             let pts = 0;
             try {
@@ -156,12 +156,12 @@
                     return 5;
                 }
             } catch (err) {}
-            return parseInt(pts);
+            return parseint(pts);
         }
 
 
 
-        $scope.pointsBonusForEleve = function(id) {
+        $scope.pointsbonusforeleve = function(id) {
             let pts_fin = 0;
             let pts_debut = 0;
 
@@ -190,11 +190,11 @@
             }
 
             if(pts_bonus > 5){
-                return parseInt(5);
-            }else return parseInt(pts_bonus);
+                return parseint(5);
+            }else return parseint(pts_bonus);
         }
 
-        $scope.pointsReguliersForEleve = function(id) {
+        $scope.pointsreguliersforeleve = function(id) {
             let pts_fin = 0;
             let pts_debut = 0;
             try {
@@ -214,17 +214,17 @@
 
             let pts_reg = 0;
 
-            if (parseInt(pts_debut) + parseInt(pts_fin)  > 5) {
+            if (parseint(pts_debut) + parseint(pts_fin)  > 5) {
                 pts_reg = 5;
-            } else pts_reg = parseInt(pts_debut) + parseInt(pts_fin);
+            } else pts_reg = parseint(pts_debut) + parseint(pts_fin);
             
-            return parseInt(pts_reg);
+            return parseint(pts_reg);
         }
 
 
 
 
-        $scope.pointsBonusEnsemble1ForEleve = function(id) {
+        $scope.pointsbonusensemble1foreleve = function(id) {
 
             let pts_fin = 0;
             let pts_debut = 0;
@@ -243,13 +243,13 @@
             } catch (err) {}
 
 
-            let pts_reg = (parseInt((parseInt(pts_debut) + parseInt(pts_fin))));
+            let pts_reg = (parseint((parseint(pts_debut) + parseint(pts_fin))));
 
             console.log(pts_reg+" "+id)
 
             if (pts_reg > 5) {
 
-                    return parseInt(pts_reg - 5);
+                    return parseint(pts_reg - 5);
              
             }
             else return 0;
@@ -259,7 +259,7 @@
         }
 
 
-        $scope.pointsEnsemble2 = function(id) {
+        $scope.pointsensemble2 = function(id) {
 
             let pts_fin = 0;
             let pts_debut = 0;
@@ -268,18 +268,18 @@
                 pts_fin = $scope.points_fin.filter(function(el) {
                     return el.id_utilisateur == id;
                 })[0].points_fin;
-                pts_fin = parseInt(pts_fin);
+                pts_fin = parseint(pts_fin);
             } catch (err) {}
-            pts_fin = parseInt(pts_fin);
+            pts_fin = parseint(pts_fin);
 
             try {
                 pts_debut = $scope.points_debut.filter(function(el) {
                     return el.id_utilisateur == id;
                 })[0].points_debut;
-                pts_debut = parseInt(pts_debut);
+                pts_debut = parseint(pts_debut);
             } catch (err) {}
-            pts_debut= parseInt(pts_debut);
-            let pts_totaux = parseInt(pts_fin) + parseInt(pts_debut);
+            pts_debut= parseint(pts_debut);
+            let pts_totaux = parseint(pts_fin) + parseint(pts_debut);
 
             if (pts_totaux > 5) {
                 pts_totaux = 5;
@@ -294,25 +294,25 @@
 
 
 
-        $scope.modifierActivitePrevue = function() {
+        $scope.modifieractiviteprevue = function() {
 
             $.ajax({
-                type: "POST",
-                url: "php_scripts/modifierActivitePrevue.php",
+                type: "post",
+                url: "php_scripts/modifieractiviteprevue.php",
                 data: {
-                    'ID_ACTIVITE_PREVUE': $('#ID_ACT_PLAN').val(),
-                    'ID_ACTIVITE': $('#mod_nom_act').val(),
-                    'DATE_ACT': $('#mod_date_act').val(),
-                    'HEURE_ACT': $('#mod_heure_deb').val(),
-                    'PARTICIPANTS_MAX': $('#mod_participants_max').val(),
-                    'FRAIS': $('#mod_frais').val(),
-                    'ENDROIT': $('#mod_endroit').val(),
-                    'RESPONSABLE': $('#mod_responsable').val()
-                }, //TODO: CHANGE PROF ID
+                    'id_activite_prevue': $('#id_act_plan').val(),
+                    'id_activite': $('#mod_nom_act').val(),
+                    'date_act': $('#mod_date_act').val(),
+                    'heure_act': $('#mod_heure_deb').val(),
+                    'participants_max': $('#mod_participants_max').val(),
+                    'frais': $('#mod_frais').val(),
+                    'endroit': $('#mod_endroit').val(),
+                    'responsable': $('#mod_responsable').val()
+                }, //todo: change prof id
                 success: function(data) {
 
                     alert(data);
-                    if (data.trim() == "L'activité a été modifiée avec succès!") {
+                    if (data.trim() == "l'activité a été modifiée avec succès!") {
                         location.reload();
                     }
 
@@ -320,29 +320,29 @@
 
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
 
 
         }
 
-        $scope.supprimerActivite = function(id) {
+        $scope.supprimeractivite = function(id) {
 
 
 
-            if (confirm("Vous êtes sur le point de supprimer cette activité, êtes vous sûr?") == true) {
+            if (confirm("vous êtes sur le point de supprimer cette activité, êtes vous sûr?") == true) {
                 $.ajax({
-                    type: "POST",
+                    type: "post",
                     url: "php_scripts/supprimeractivite.php",
                     data: {
-                        'ID_ACTIVITE': id,
-                    }, //TODO: CHANGE PROF ID
+                        'id_activite': id,
+                    }, //todo: change prof id
                     success: function(data) {
                         location.reload();
                     },
                     error: function(req) {
-                        alert("Erreur");
+                        alert("erreur");
                     }
                 });
 
@@ -350,64 +350,64 @@
             }
         }
 
-        $scope.modifierActivite = function(activite) {
+        $scope.modifieractivite = function(activite) {
 
-            $('#id_mod_act').val(activite.ID_Activite);
-            $('#nom_activite_mod').val(activite.Nom_Activite);
-            $('#duree_mod').val(activite.Duree);
-            $('#point_mod').val(activite.Ponderation);
-            $('#description_mod').val(activite.Commentaire);
+            $('#id_mod_act').val(activite.id_activite);
+            $('#nom_activite_mod').val(activite.nom_activite);
+            $('#duree_mod').val(activite.duree);
+            $('#point_mod').val(activite.ponderation);
+            $('#description_mod').val(activite.commentaire);
             $('#modal_mod_new_activite').modal("open");
-            $('#modal_mod_new_activite label').addClass("active");
+            $('#modal_mod_new_activite label').addclass("active");
         }
 
-        $scope.modifierSession = function(session) {
+        $scope.modifiersession = function(session) {
 
-            $('#id_session_mod').val(session.ID_Session);
-            $('#nom_session_mod').val(session.Nom_Session);
-            $('#deb_session_mod').val(session.Debut_Session);
-            $('#mi_session_mod').val(session.Mi_Session);
-            $('#fin_session_mod').val(session.Fin_Session);
+            $('#id_session_mod').val(session.id_session);
+            $('#nom_session_mod').val(session.nom_session);
+            $('#deb_session_mod').val(session.debut_session);
+            $('#mi_session_mod').val(session.mi_session);
+            $('#fin_session_mod').val(session.fin_session);
             $('#modal_session_mod').modal('open');
-            $('#modal_session_mod label').addClass("active");
+            $('#modal_session_mod label').addclass("active");
 
         }
 
-        $scope.niveauxAdmin = ['Administrateur', 'Planificateur'];
+        $scope.niveauxadmin = ['administrateur', 'planificateur'];
 
-        $scope.saveAdmin = function() {
+        $scope.saveadmin = function() {
             $.ajax({
-                type: "POST",
-                url: "php_scripts/updateAdmin.php",
+                type: "post",
+                url: "php_scripts/updateadmin.php",
                 data: {
-                    'user': $('#utilisateurNivAdmin').val(),
-                    'admin': $('#niveauUser').val()
-                }, //TODO: CHANGE PROF ID
+                    'user': $('#utilisateurnivadmin').val(),
+                    'admin': $('#niveauuser').val()
+                }, //todo: change prof id
                 success: function(data) {
                     location.reload();
 
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
 
         }
 
-        $scope.now = new Date();
+        $scope.now = new date();
 
-        $scope.toDate = function(dateMod) {
-            return new Date(dateMod);
+        $scope.todate = function(datemod) {
+            return new date(datemod);
         }
 
-        $scope.scopePrint = function(val) {
+        $scope.scopeprint = function(val) {
         }
 
 
-        $scope.activiteFromId = function(id) {
+        $scope.activitefromid = function(id) {
 
             let act = $scope.activites.filter(function(ac) {
-                return ac.ID_Activite == id;
+                return ac.id_activite == id;
             })[0];
 
             return act;
@@ -416,7 +416,7 @@
 
 
 
-        $scope.groupeFromId = function(id) {
+        $scope.groupefromid = function(id) {
 
             let gr = $scope.groupes.filter(function(gr) {
                 return gr.id_groupe == id;
@@ -427,34 +427,34 @@
         }
 
 
-        $scope.adminLevelFromID = function(admin) {
+        $scope.adminlevelfromid = function(admin) {
 
-            let adminLevel;
+            let adminlevel;
 
             switch (admin) {
                 case '2':
-                    adminLevel = 'Administrateur';
+                    adminlevel = 'administrateur';
                     break;
                 case '1':
-                    adminLevel = 'Responsable';
+                    adminlevel = 'responsable';
                     break;
                 default:
-                    adminLevel = 'Utilisateur Régulier';
+                    adminlevel = 'utilisateur régulier';
 
             }
-            return adminLevel;
+            return adminlevel;
 
         }
 
 
-        $scope.elevesDansGroupe = function(groupe) {
+        $scope.elevesdansgroupe = function(groupe) {
             return $scope.eleves.filter(function(el) {
 
                 return el.id_groupe == groupe && el.code_acces == "";
             });
         }
 
-        $scope.eleveFromId = function(id) {
+        $scope.elevefromid = function(id) {
             return $scope.eleves.filter(function(el) {
 
                 return el.id_utilisateur == id;
@@ -464,31 +464,31 @@
 
 
 
-        $scope.getElevesForActivitePrevue = function(activite) {
+        $scope.getelevesforactiviteprevue = function(activite) {
 
             let liste_el_ac = ($scope.eleves_activites.filter(function(ac) {
-                return ac.ID_Activite_Prevue == activite;
+                return ac.id_activite_prevue == activite;
             }));
 
 
-            var listeId = liste_el_ac.map(function(a) {
-                return a.ID_Utilisateur;
+            var listeid = liste_el_ac.map(function(a) {
+                return a.id_utilisateur;
             });
 
             let arr = [];
 
-            for (var i = 0; i < listeId.length; i++) {
-                arr.push($scope.eleveFromId(listeId[i]));
+            for (var i = 0; i < listeid.length; i++) {
+                arr.push($scope.elevefromid(listeid[i]));
             }
             return arr;
 
         }
 
-        $scope.getPresenceForEleve = function(activite_prevue, eleve) {
+        $scope.getpresenceforeleve = function(activite_prevue, eleve) {
             try {
                 let present = ($scope.eleves_activites.filter(function(ac) {
-                    return ac.ID_Activite_Prevue == activite_prevue && ac.ID_Utilisateur == eleve;
-                }))[0].Present;
+                    return ac.id_activite_prevue == activite_prevue && ac.id_utilisateur == eleve;
+                }))[0].present;
 
                 if (present == 1) {
                     return true;
@@ -500,21 +500,21 @@
 
         }
 
-        $scope.annulerActivite = function(activite) {
+        $scope.annuleractivite = function(activite) {
 
-            if (confirm("Vous êtes sur le point de supprimer cette activité, êtes vous sûr?") == true) {
+            if (confirm("vous êtes sur le point de supprimer cette activité, êtes vous sûr?") == true) {
                 $.ajax({
-                    type: "POST",
-                    url: "php_scripts/annulerActivite.php",
+                    type: "post",
+                    url: "php_scripts/annuleractivite.php",
                     data: {
-                        'ID_ACTIVITE': activite,
-                    }, //TODO: CHANGE PROF ID
+                        'id_activite': activite,
+                    }, //todo: change prof id
                     success: function(data) {
                         location.reload();
 
                     },
                     error: function(req) {
-                        alert("Erreur");
+                        alert("erreur");
                     }
                 });
 
@@ -527,7 +527,7 @@
 
 
 
-        $scope.eleveFromId = function(id) {
+        $scope.elevefromid = function(id) {
 
 
             let elev = $scope.eleves.filter(function(el) {
@@ -539,26 +539,26 @@
         }
 
 
-        $scope.enregistrerPresence = function(activite_prevue) {
-            var values = new Array();
-            $.each($("input[name='presenceActivite']:checked"), function() {
+        $scope.enregistrerpresence = function(activite_prevue) {
+            var values = new array();
+            $.each($("input[name='presenceactivite']:checked"), function() {
                 values.push($(this).val());
             });
 
             alert(values);  
 
             $.ajax({
-                type: "POST",
-                url: "php_scripts/prendrePresence.php",
+                type: "post",
+                url: "php_scripts/prendrepresence.php",
                 data: {
-                    'PRESENTS': values,
-                    'ACTIVITE': $scope.activiteSelectionne
-                }, //TODO: CHANGE PROF ID
+                    'presents': values,
+                    'activite': $scope.activiteselectionne
+                }, //todo: change prof id
                 success: function(data) {
                     location.reload();
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
 
@@ -567,7 +567,7 @@
         }
 
 
-        $scope.comptesAvecCodeDansGroupe = function(groupe) {
+        $scope.comptesaveccodedansgroupe = function(groupe) {
             return $scope.eleves.filter(function(el) {
                 return el.id_groupe == groupe && el.code_acces != "";
             });
@@ -575,7 +575,7 @@
 
 
 
-        $scope.comptesAdmin = function(groupe) {
+        $scope.comptesadmin = function(groupe) {
             return $scope.eleves.filter(function(el) {
                 return el.administrateur >= 1 && el.code_acces == "";
             });
@@ -583,15 +583,15 @@
 
 
 
-        $scope.genererCodePourGroupe = function(groupe, nb_codes) {
+        $scope.generercodepourgroupe = function(groupe, nb_codes) {
 
             $.ajax({
-                type: "POST",
+                type: "post",
                 url: "php_scripts/generercode.php",
                 data: {
                     'admin': 0,
-                    'id_groupe': $scope.codeGroupe,
-                    'nb_codes': $("#codeGroupe").val()
+                    'id_groupe': $scope.codegroupe,
+                    'nb_codes': $("#codegroupe").val()
                 },
                 success: function(data) {
 
@@ -599,22 +599,22 @@
 
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
 
         }
 
 
-        $scope.genererCodePourGroupe0 = function(){
+        $scope.generercodepourgroupe0 = function(){
 
              $.ajax({
-                type: "POST",
+                type: "post",
                 url: "php_scripts/generercode.php",
                 data: {
                     'admin': 0,
-                    'id_groupe': $scope.codeGroupe,
-                    'nb_codes': $("#codeGroupe0").val()
+                    'id_groupe': $scope.codegroupe,
+                    'nb_codes': $("#codegroupe0").val()
                 },
                 success: function(data) {
                     alert(data);
@@ -622,86 +622,86 @@
 
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
 
         }
 
-        $scope.genererCodeAdmin = function(nb_codes) {
+        $scope.generercodeadmin = function(nb_codes) {
 
             $.ajax({
-                type: "POST",
+                type: "post",
                 url: "php_scripts/generercode.php",
                 data: {
-                    'admin': $('input[name=niveauAdmin]:checked').val(),
+                    'admin': $('input[name=niveauadmin]:checked').val(),
                     'id_groupe': 'null',
-                    'nb_codes': $("#codeAdmin").val()
+                    'nb_codes': $("#codeadmin").val()
                 },
                 success: function(data) {
 
                     location.reload();
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
 
         }
 
-        $scope.setPromotionId = function(groupe) {
+        $scope.setpromotionid = function(groupe) {
 
-            $scope.groupePromotion = $scope.elevesDansGroupe(groupe);
+            $scope.groupepromotion = $scope.elevesdansgroupe(groupe);
 
 
 
         }
 
 
-        $scope.promoteUser = function(id_user) {
+        $scope.promoteuser = function(id_user) {
 
-            if (confirm("Êtes-vous sûr de vouloir promouvoir cet utilisateur?"))
+            if (confirm("êtes-vous sûr de vouloir promouvoir cet utilisateur?"))
                 $.ajax({
-                    type: "POST",
-                    url: "php_scripts/updateAdmin.php",
+                    type: "post",
+                    url: "php_scripts/updateadmin.php",
                     data: {
 
                         'user': id_user,
                         'admin': 1
 
 
-                    }, //TODO: CHANGE PROF ID
+                    }, //todo: change prof id
                     success: function(data) {
 
                         location.reload();
 
                     },
                     error: function(req) {
-                        alert("Erreur");
+                        alert("erreur");
                     }
                 });
 
         }
 
-        $scope.demoteUser = function(id_user){
-                        if (confirm("Êtes-vous sûr de vouloir rétrograder cet utilisateur?"))
+        $scope.demoteuser = function(id_user){
+                        if (confirm("êtes-vous sûr de vouloir rétrograder cet utilisateur?"))
                 $.ajax({
-                    type: "POST",
-                    url: "php_scripts/updateAdmin.php",
+                    type: "post",
+                    url: "php_scripts/updateadmin.php",
                     data: {
 
                         'user': id_user,
                         'admin': 0
 
 
-                    }, //TODO: CHANGE PROF ID
+                    }, //todo: change prof id
                     success: function(data) {
 
                         location.reload();
 
                     },
                     error: function(req) {
-                        alert("Erreur");
+                        alert("erreur");
                     }
                 });
 
@@ -712,22 +712,22 @@
         $scope.creergroupe = function() {
 
             $.ajax({
-                type: "POST",
+                type: "post",
                 url: "php_scripts/creergroupe.php",
                 data: {
                     'nomgroupe': $("#nomgroupe").val(),
                     'id_prof': 0,
-                    'nb_codes': $("#rangeEleves").val(),
+                    'nb_codes': $("#rangeeleves").val(),
                     'ensemble': $("#ensemble").val(),
                     'session': $("#session").val()
 
-                }, //TODO: CHANGE PROF ID
+                }, //todo: change prof id
                 success: function(data) {
                     location.reload();
 
                 },
                 error: function(req) {
-                    alert("Erreur");
+                    alert("erreur");
                 }
             });
         }
@@ -735,50 +735,50 @@
 
 
 
-        $scope.ouvrirModalModifierPermission = function(id_admin, niveau) {
+        $scope.ouvrirmodalmodifierpermission = function(id_admin, niveau) {
 
-            $("#utilisateurNivAdmin").val(id_admin);
-            $('#modal_niveauAdmin').modal('open');
-            $('#niveauUser').val(niveau).change();
-            $('#niveauUser').material_select();
+            $("#utilisateurnivadmin").val(id_admin);
+            $('#modal_niveauadmin').modal('open');
+            $('#niveauuser').val(niveau).change();
+            $('#niveauuser').material_select();
 
         }
 
         $scope.print = function(groupe) {
-            var prtContent = document.getElementById('codesGroupe' + groupe);
-            var WinPrint = window.open('', '', 'left=0,top=0,width=1920,height=2000,toolbar=0,scrollbars=0,status=0');
-            WinPrint.document.write("LISTE DES CODES D'ACCÈS <br>" + prtContent.innerHTML);
-            WinPrint.document.close();
-            WinPrint.focus();
-            WinPrint.print();
-            WinPrint.close();
+            var prtcontent = document.getelementbyid('codesgroupe' + groupe);
+            var winprint = window.open('', '', 'left=0,top=0,width=1920,height=2000,toolbar=0,scrollbars=0,status=0');
+            winprint.document.write("liste des codes d'accès <br>" + prtcontent.innerhtml);
+            winprint.document.close();
+            winprint.focus();
+            winprint.print();
+            winprint.close();
         }
 
-        $scope.supprimerGroupe = function(groupe, nomGroupe) {
+        $scope.supprimergroupe = function(groupe, nomgroupe) {
 
-            var nom_Groupe = prompt("Pour confirmer la suppression, veuillez entrer le nom du groupe", "");
+            var nom_groupe = prompt("pour confirmer la suppression, veuillez entrer le nom du groupe", "");
 
-            if (nom_Groupe == nomGroupe) {
+            if (nom_groupe == nomgroupe) {
                 $.ajax({
-                    type: "POST",
+                    type: "post",
                     url: "php_scripts/supprimergroupe.php",
                     data: {
                         'id_groupe': groupe,
-                    }, //TODO: CHANGE PROF ID
+                    }, //todo: change prof id
                     success: function(data) {
 
                         location.reload();
                     },
                     error: function(req) {
-                        alert("Erreur");
+                        alert("erreur");
                     }
                 });
-            }else alert("Le groupe saisi ne correspond pas au groupe que vous souhaitez supprimer. La suppression est annulée")
+            }else alert("le groupe saisi ne correspond pas au groupe que vous souhaitez supprimer. la suppression est annulée")
         }
 
     });
 
-    $("#selectResponsable").val($("#selectResponsable option:first").val());
-    $('#selectResponsable').material_select();
+    $("#selectresponsable").val($("#selectresponsable option:first").val());
+    $('#selectresponsable').material_select();
 
 </script>
